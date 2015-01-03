@@ -1,0 +1,39 @@
+{
+  "name": "level-map-index",
+  "version": "0.0.0",
+  "description": "create indices for leveldb",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test/index.js | tap-spec"
+  },
+  "keywords": [
+    "leveldb",
+    "index",
+    "map"
+  ],
+  "author": "Vincent Weevers (http://vincentweevers.nl)",
+  "contributors": [
+    "Dominic Tarr <dominic.tarr@gmail.com> (http://bit.ly/dominictarr)"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "level-trigger": "~1.3.2",
+    "bytewise": "~0.7.1",
+    "xtend": "~4.0.0",
+    "through2": "~0.6.3",
+    "end-of-stream": "~1.1.0",
+    "deep-dot": "~0.0.2"
+  },
+  "devDependencies": {
+    "after": "~0.8.1",
+    "level-sublevel": "~6.4.0",
+    "level-test": "~1.6.6",
+    "tape": "~3.0.3"
+  },
+  "repository": "git://github.com/vweevers/level-map-index",
+  "bugs": "https://github.com/vweevers/level-map-index/issues",
+  "homepage": "https://github.com/vweevers/level-map-index",
+  "engines": {
+    "node": ">= 0.10.0"
+  }
+}
