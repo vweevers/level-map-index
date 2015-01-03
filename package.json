@@ -4,7 +4,7 @@
   "description": "create indices for leveldb",
   "main": "index.js",
   "scripts": {
-    "test": "tape test/index.js | tap-spec"
+    "test": "tape test/index.js"
   },
   "keywords": [
     "leveldb",
