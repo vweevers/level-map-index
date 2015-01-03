@@ -1,6 +1,6 @@
 {
   "name": "level-map-index",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "create indices for leveldb",
   "main": "index.js",
   "scripts": {
