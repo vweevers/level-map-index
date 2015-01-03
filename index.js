@@ -44,6 +44,14 @@ function install(db, defs) {
     var idx = db.index(props_)
       , props = idx._indexProps // always an array
 
+    if (!idx.completedFirst || !idx.isComplete()) {
+      var proxy = through2.obj() // passthrough
+      idx.once('complete', function(){
+        db.streamBy(props_, values, opts).pipe(proxy)
+      })
+      return proxy
+    }
+
     opts = xtend(defs, defs.get, {values: true, keys: false}, opts || {})
 
     var rng = values && values.$from
@@ -76,7 +84,7 @@ function install(db, defs) {
     else if (typeof opts == 'function') cb = opts, opts = null
 
     var a = [], stream =
-      db.streamBy(idx, range, opts).on('error', cb)
+      db.streamBy(idx, range, opts).once('error', cb)
       .pipe(through2.obj(function(o,_,next){ a.push(o); next() }))
 
     stream.resume()
@@ -156,6 +164,10 @@ function createIndex(db, props, name, opts) {
     return mapDb
   }
 
+  mapDb.isComplete = function() {
+    return trigger.isComplete()
+  }
+
   mapDb.createViewStream = function(opts) {
     return mapDb.createReadStream(opts).on('data', function(d) {
       d.key = range.parse(d.key)
@@ -177,9 +189,14 @@ function createIndex(db, props, name, opts) {
     return mapDb
   }
 
+  jobs.once('complete', function(){
+    mapDb.completedFirst = true
+  })
+
   jobs.on('complete', function(){
     mapDb.emit('complete')
   })
 
+  mapDb.start()
   return mapDb
 }

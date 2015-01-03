@@ -30,12 +30,11 @@ db.index('custom', function map(key, value){
 var author = { name: 'bob' }
 var book   = { title: 'foo', price: 10, author: author }
 
-db.put('foo', book, function() {
-  // indexing is triggered some time in the future
-  setTimeout(search, 300)
-})
+db.put('foo', book, search)
 
-function search() {  
+function search() {
+  // streams will wait for indexing to complete
+
   // every book by bob, ordered by price
   db.streamBy(['author.name', 'price'], 'bob').pipe(somewhere)
 

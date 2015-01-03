@@ -9,7 +9,7 @@ function create(opts) {
   return index(sdb, opts)
 }
 
-test('ff', function(t){
+test('index', function(t){
   var db = create()
 
   db.index('price')
@@ -22,16 +22,16 @@ test('ff', function(t){
   var book2 = { title: 'working', price:  5, author: { name:  'bob' } }
   var book3 = { title: 'driving', price: 19, author: { name:  'sara' } }
 
+  t.plan(5)
+
   db.batch([
     {type: 'put', key: book1.title, value: book1},
     {type: 'put', key: book2.title, value: book2},
     {type: 'put', key: book3.title, value: book3}
   ], function(err){
     if (err) return t.fail(err)
-    setTimeout(search, 300)
+    search()
   })
-
-  t.plan(6)
 
   function search() {
     var end = after(4, testHook)
@@ -58,8 +58,7 @@ test('ff', function(t){
 
     function testHook() {
       db.index('custom').post(function(op){
-        t.equal(op.type, 'del')
-        t.deepEqual(op.key, [1, book3.title])
+        if (op.type=='del') t.deepEqual(op.key, [1, book3.title])
       })
 
       db.del(book3.title)
